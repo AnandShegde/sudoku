@@ -46,6 +46,19 @@ typedef long long ll;
 #define pwe(x) printf("%lld ",x); // print without end
 // ----</PRINTF>----
 int a,b,c,d,e,t,no,i,j,n,m,row,col,x;
+void printarray(int *sudoku)
+{
+    REP(i,m)// this loop prints the solution
+            {
+                REP(j,n)
+                {
+                    //if(sudoku1[i][j]>9) sudoku1[i][j]=9;
+
+                    printf("%d ",*(sudoku+i*9+j));
+                }
+                printf("\n");
+            }
+}
 
 int check(const int *array,const int row,const int col,const int coloumn,const int rows)
 {
@@ -98,37 +111,71 @@ void change(const int *zeros, int *sudoku,const int m,const int n)
 
     value=*(sudoku+row*9+colou);
 
+
     present= check(sudoku,row,colou,9,9);
-    /*printf("value=%d ",value); printf("row=%d ",row);printf("col=%d ",colou);
+
+    /*printf("value=%d ",value); printf("row=%d ",row+1);printf("col=%d ",colou+1);
     printf("present=%d\n",present);*/
-    if(present==1)
+
+    if(value>9)
     {
-        if(value!=9) change(zeros,sudoku,9,9);
-        else
-        {
-            *(sudoku+row*9+colou)=0;
-            change(zeros-1,sudoku,9,9);
 
-        }
+        *(sudoku+row*9+colou)=0;
+        //printarray(sudoku);
+    //getch();
+        change(zeros-1,sudoku,9,9);
     }
-if(present==0)
- {
+    else
+    {
 
 
-     if((*(zeros+1))<89&&((*(zeros+1))>-1))
-     {change(zeros+1,sudoku,9,9);
+        if(present==1)
+            {
+                if(value<9)
+                {
+                    change(zeros,sudoku,9,9);
+                }
+                else
+                {
+                    //printf("%d\n",*zeros);
+                    *(sudoku+row*9+colou)=0;
+                    change(zeros-1,sudoku,9,9);
 
-     }
+                }
+            }
+        else if(present==0)
+         {
+             if(row+1==9&&colou+1==9)
+                return;
+            //printarray(sudoku);
 
- }
+            //getch();
+            //printf("%d\n",*(zeros+1));
+            if(value>9)
+            {
+            *(sudoku+row*9+colou)=0;
+            //printarray(sudoku);
+            getch();
+                change(zeros-1,sudoku,9,9);
+            }
 
+
+             if((*(zeros+1))<89&&((*(zeros+1))>-1))
+             {
+                 change(zeros+1,sudoku,9,9);
+             }
+
+
+
+         }
+    }
 
 }
 
 int main()
 {
     m=9;n=9;// this are no of rows and colomns in problem
-    int sudoku1 [9][9]={0,3,5,2,6,9,7,8,1,
+    int sudoku2 [9][9]={0,3,5,2,6,9,7,8,1,
     6,0,2,0,7,1,4,9,3,
     1,0,0,8,0,4,5,6,2,
     8,2,6,0,9,5,0,4,7,
@@ -136,7 +183,8 @@ int main()
     9,0,1,7,4,0,0,2,8,
     0,1,9,0,2,6,0,7,4,
     0,4,0,9,5,0,1,3,6,
-    7,0,3,0,1,0,0,5,0};// this is the problem
+    7,0,3,0,1,0,0,5,0};
+    int sudoku1 [9][9]={0};// this is the problem
     int sudoku [m][n],zeros_address[100];// i need the actual problem for
     //reference, since i am going to change it, so this sudoku[m][n] is for
     //working
